@@ -17,3 +17,7 @@ for image in $images; do
   echo "Pulling image: $image"
   docker pull "$image"
 done
+
+docker images
+
+echo "All Docker images have been pulled."
