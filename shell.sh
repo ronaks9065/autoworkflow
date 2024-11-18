@@ -1,5 +1,5 @@
 #!/bin/bash
-
+ 
 # Mirror clone the source repository
 git clone --mirror https://github.com/sovity/edc-ce.git
 cd edc-ce.git
