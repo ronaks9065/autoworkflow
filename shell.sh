@@ -22,5 +22,9 @@ docker images
 
 echo "All Docker images have been pulled."
 
-aws s3 ls
+# Define your ECR repository details
+ecr_registry="public.ecr.aws/d1w2v6r1"
+
+# Login to AWS ECR
+aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ecr_registry
  
