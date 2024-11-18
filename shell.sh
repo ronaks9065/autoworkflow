@@ -11,3 +11,9 @@ echo "Latest tag: $latest_tag"
 images=$(grep -E 'IMAGE=' .env | cut -d '=' -f2)
 echo "Docker images:"
 echo "$images"
+
+# Pull the Docker images
+for image in $images; do
+  echo "Pulling image: $image"
+  docker pull "$image"
+done
