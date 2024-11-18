@@ -66,5 +66,4 @@ for image in $images; do
   docker push "$ecr_image"
 done
 
-
 echo "All images have been pushed to ECR."
