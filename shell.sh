@@ -23,3 +23,4 @@ docker images
 echo "All Docker images have been pulled."
 
 aws s3 ls
+ 
