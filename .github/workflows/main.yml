@@ -14,6 +14,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      # Configure AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: AKIAZI2LGWBOYBOBYKVF
+          aws-secret-access-key: 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
+          aws-region: us-east-1
+
       # Make the script executable
       - name: Set execute permission on the script
         run: chmod +x ./shell.sh
