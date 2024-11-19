@@ -1,5 +1,5 @@
 #!/bin/bash
-
+ 
 git clone https://github.com/sovity/edc-ce.git
 cd edc-ce
 
