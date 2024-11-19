@@ -1,11 +1,7 @@
 #!/bin/bash
 
-git clone https://github.com/ronaks9065/mirror-edc-ce-repo.git
-cd mirror-edc-ce-repo
-
-# fetch latest tag from repo
-latest_tag=$(git tag --sort=version:refname | tail -n 1)
-echo "Latest tag: $latest_tag"
+git clone https://github.com/sovity/edc-ce.git
+cd edc-ce
 
 # Extract Docker images from the .env file
 images=$(grep -E 'IMAGE=' .env | cut -d '=' -f2)
