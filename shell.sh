@@ -1,50 +1,65 @@
 #!/bin/bash
-
-# Clone the repository and navigate to it
+ 
 git clone https://github.com/sovity/edc-ce.git
 cd edc-ce
 
-# Define the repository for which you want to fetch the latest release tag
-repository="sovity/edc-ce"
+# Extract Docker images from the .env file
+images=$(grep -E 'IMAGE=' .env | cut -d '=' -f2)
+echo "Docker images:"
+echo "$images"
 
-# Fetch the latest release tag using the GitHub API
-latest_release=$(curl -s "https://api.github.com/repos/$repository/releases/latest" | jq -r '.tag_name')
+# Pull the Docker images
+for image in $images; do
+  echo "Pulling image: $image"
+  docker pull "$image"
+done
 
-# Check if the latest release was fetched successfully
-if [ -z "$latest_release" ] || [ "$latest_release" == "null" ]; then
-  echo "Failed to fetch the latest release tag from the GitHub API."
-  exit 1
-fi
+docker images
 
-# Remove the 'v' prefix if it exists
-latest_release=${latest_release#v}
+echo "All Docker images have been pulled."
 
-echo "Latest release tag for $repository: $latest_release"
-
-# Define the Docker image to pull
-image_name="ghcr.io/sovity/edc-ce"
-image_tag="$latest_release"
-full_image="$image_name:$image_tag"
-
-echo "Docker image to pull: $full_image"
-
-# Pull the Docker image
-echo "Pulling image: $full_image"
-docker pull "$full_image"
-
-# ECR repository details
-ecr_registry="public.ecr.aws/z8l4a2l1"
-ecr_repository="edc"
-ecr_image="$ecr_registry/$ecr_repository:$image_tag"
+# Define your ECR repository details
+ecr_registry="public.ecr.aws/d1w2v6r1"
 
 # Login to AWS ECR
-aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin "$ecr_registry"
+aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ecr_registry
+ 
+# Loop through each image and push to ECR
+for image in $images; do
+  echo "Processing image: $image"
+  
+  # Extract the image name and tag (e.g., 'image:tag')
+  image_name=$(echo "$image" | cut -d ':' -f1)
+  image_tag=$(echo "$image" | cut -d ':' -f2)
+  
+  # If no tag is specified, default to 'latest'
+  image_tag=${image_tag:-latest}
+  
+  # Determine the appropriate ECR repository based on the image name
+  case "$image_name" in
+    "ghcr.io/sovity/edc-dev")
+      ecr_repository="edc"
+      ;;
+    "ghcr.io/sovity/test-backend")
+      ecr_repository="test-backend"
+      ;;
+    "ghcr.io/sovity/edc-ui")
+      ecr_repository="edc-ui"
+      ;;
+    *)
+      echo "Unknown image: $image_name, skipping"
+      continue
+      ;;
+  esac
 
-# Tag and push the image to ECR
-echo "Tagging image: $full_image as $ecr_image"
-docker tag "$full_image" "$ecr_image"
+  # Construct the ECR image name
+  ecr_image="public.ecr.aws/d1w2v6r1/$ecr_repository:$image_tag"
+  
+  # Tag the image for ECR
+  docker tag "$image" "$ecr_image"
+  
+  # Push the image to ECR
+  docker push "$ecr_image"
+done
 
-echo "Pushing image to ECR: $ecr_image"
-docker push "$ecr_image"
-
-echo "Image has been successfully pushed to ECR."
+echo "All images have been pushed to ECR."
