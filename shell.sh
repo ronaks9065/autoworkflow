@@ -21,51 +21,30 @@ latest_release=${latest_release#v}
 
 echo "Latest release tag for $repository: $latest_release"
 
-# Define Docker images to pull
-images=(
-  "ghcr.io/sovity/edc-ce:$latest_release"
-)
+# Define the Docker image to pull
+image_name="ghcr.io/sovity/edc-ce"
+image_tag="$latest_release"
+full_image="$image_name:$image_tag"
 
-echo "Docker images to pull:"
-echo "${images[@]}"
+echo "Docker image to pull: $full_image"
 
-# Pull the Docker images
-for image in "${images[@]}"; do
-  echo "Pulling image: $image"
-  docker pull "$image"
-done
+# Pull the Docker image
+echo "Pulling image: $full_image"
+docker pull "$full_image"
 
 # ECR repository details
 ecr_registry="public.ecr.aws/z8l4a2l1"
+ecr_repository="edc"
+ecr_image="$ecr_registry/$ecr_repository:$image_tag"
 
 # Login to AWS ECR
 aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin "$ecr_registry"
 
-# Push images to ECR
-for image in "${images[@]}"; do
-  echo "Processing image: $image"
-  
-  # Extract image name and tag
-  image_name=$(echo "$image" | cut -d ':' -f1)
-  image_tag=$(echo "$image" | cut -d ':' -f2)
-  
-  # Determine the ECR repository based on the image name
-  case "$image_name" in
-    "ghcr.io/sovity/edc-ce")
-      ecr_repository="edc"
-      ;;
-    *)
-      echo "Unknown image: $image_name, skipping"
-      continue
-      ;;
-  esac
+# Tag and push the image to ECR
+echo "Tagging image: $full_image as $ecr_image"
+docker tag "$full_image" "$ecr_image"
 
-  # Construct the ECR image name
-  ecr_image="$ecr_registry/$ecr_repository:$image_tag"
+echo "Pushing image to ECR: $ecr_image"
+docker push "$ecr_image"
 
-  # Tag and push the image
-  docker tag "$image" "$ecr_image"
-  docker push "$ecr_image"
-done
-
-echo "All images have been pushed to ECR."
+echo "Image has been successfully pushed to ECR."
