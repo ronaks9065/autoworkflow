@@ -10,6 +10,10 @@ repository="sovity/edc-ce"
 # Fetch the latest release tag using the GitHub API
 latest_release=$(curl -s "https://api.github.com/repos/$repository/releases/latest" | jq -r '.tag_name')
 
+# for fetching previous release
+# latest_release=$(curl -s "https://api.github.com/repos/$repository/releases" | jq -r '.[8].tag_name')
+
+
 # Check if the latest release was fetched successfully
 if [ -z "$latest_release" ] || [ "$latest_release" == "null" ]; then
   echo "Failed to fetch the latest release tag from the GitHub API."
