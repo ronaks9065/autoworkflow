@@ -15,7 +15,10 @@ if [ -z "$latest_release" ] || [ "$latest_release" == "null" ]; then
   exit 1
 fi
 
+latest_release=${latest_release#v}
+
 echo "Latest release tag for $repository: $latest_release"
+
 
 images=(
   "ghcr.io/sovity/edc-ce:$latest_release"
