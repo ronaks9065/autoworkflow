@@ -8,7 +8,7 @@ cd edc-ce
 repository="sovity/edc-ce"
 
 # Fetch the latest release tag using the GitHub API
-latest_release=$(curl -s "https://api.github.com/repos/$repository/releases" | jq -r '.[8].tag_name')
+latest_release=$(curl -s "https://api.github.com/repos/$repository/releases/latest" | jq -r '.tag_name')
 
 # Check if the latest release was fetched successfully
 if [ -z "$latest_release" ] || [ "$latest_release" == "null" ]; then
