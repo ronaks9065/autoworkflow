@@ -28,5 +28,5 @@ jobs:
 
       # Execute the shell script
       - name: Run the shell script
-        run: ./shell.sh
+        run: ./shell.sh 
 
