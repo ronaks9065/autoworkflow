@@ -18,7 +18,7 @@ fi
 echo "Latest release tag for $repository: $latest_release"
 
 images=(
-  "ghcr.io/sovity/edc-dev:$latest_release"
+  "ghcr.io/sovity/edc-ce:$latest_release"
   "ghcr.io/sovity/edc-ui:$latest_release"
 )
 
