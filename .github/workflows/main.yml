@@ -1,12 +1,15 @@
 name: Github actions with IAM role
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 permissions:
   contents: read 
   id-token: write
 
 jobs:
-  AssumeRole:
+  push_images:
     runs-on: ubuntu-latest
     steps:
     - name: Clone repository
@@ -19,5 +22,14 @@ jobs:
         role-session-name: github-actions-federation
         aws-region: ${{ secrets.REGION }}
  
-    - name: List buckets
-      run: aws s3 ls
+     # Install jq
+    - name: Install jq
+      run: sudo apt-get update && sudo apt-get install -y jq
+  
+    # Make the script executable
+    - name: Set execute permission on the script
+      run: chmod +x ./shell.sh
+  
+    # Execute the shell script
+    - name: Run the shell script
+      run: ./shell.sh
