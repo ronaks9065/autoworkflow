@@ -3,7 +3,7 @@ name: Mirror Repository and Push Docker Images to ECR
 on:
   push:
     branches:
-      - master 
+      - master  
 
 jobs: 
   mirror_and_push_images:
