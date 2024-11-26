@@ -2,7 +2,7 @@ name: Github actions with IAM role
 on: [push]
 
 env:
-  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_REGION: ${{ secrets.REGION }}
   IAM_ROLE: ${{ secrets.IAM_ROLE }}
 
 permissions:
@@ -21,7 +21,7 @@ jobs:
       with:
         role-to-assume: ${{ env.IAM_ROLE }}
         role-session-name: github-actions-federation
-        aws-region: ${{ env.AWS_REGION }}
+        aws-region: ${{ env.REGION }}
  
     - name: List buckets
       run: aws s3 ls
