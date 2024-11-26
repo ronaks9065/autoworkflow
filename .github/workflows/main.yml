@@ -1,10 +1,6 @@
 name: Github actions with IAM role
 on: [push]
 
-env:
-  AWS_REGION: ${{ secrets.REGION }}
-  IAM_ROLE: ${{ secrets.IAM_ROLE }}
-
 permissions:
   contents: read 
   id-token: write
@@ -19,9 +15,9 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        role-to-assume: ${{ env.IAM_ROLE }}
+        role-to-assume: ${{ secrets.IAM_ROLE }}
         role-session-name: github-actions-federation
-        aws-region: ${{ env.REGION }}
+        aws-region: ${{ secrets.REGION }}
  
     - name: List buckets
       run: aws s3 ls
