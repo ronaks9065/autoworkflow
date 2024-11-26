@@ -1,35 +1,27 @@
-name: Mirror Repository and Push Docker Images to ECR
+name: Github actions with IAM role
+on: [push]
 
-on:
-  push:
-    branches:
-      - master  
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  IAM_ROLE: ${{ secrets.IAM_ROLE }}
 
-jobs: 
-  mirror_and_push_images:
+permissions:
+  contents: read 
+  id-token: write
+
+jobs:
+  AssumeRole:
     runs-on: ubuntu-latest
-
     steps:
-      # Checkout the repository
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+    - name: Clone repository
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ env.IAM_ROLE }}
+        role-session-name: github-actions-federation
+        aws-region: ${{ env.AWS_REGION }}
  
-      # Configure AWS credentials
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: arn:aws:iam::339713111211:role/github-ecr
-          aws-region: us-east-1
-          audience: sts.amazonaws.com
-
-      # Install jq
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
-
-      # Make the script executable
-      - name: Set execute permission on the script
-        run: chmod +x ./shell.sh
-
-      # Execute the shell script
-      - name: Run the shell script
-        run: ./shell.sh
+    - name: List buckets
+      run: aws s3 ls
