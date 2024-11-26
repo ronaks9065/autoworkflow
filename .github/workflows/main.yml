@@ -13,7 +13,7 @@ jobs:
       # Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v2
-
+ 
       # Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
