@@ -2,7 +2,7 @@
  
 # Clone the repository and navigate to it
 git clone https://github.com/sovity/edc-ce.git
-cd edc-ce
+cd edc-ce 
 
 # Define the repository for which you want to fetch the latest release tag
 repository="sovity/edc-ce"
