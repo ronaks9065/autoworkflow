@@ -20,6 +20,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::339713111211:role/github-ecr
           aws-region: us-east-1
+          audience: sts.amazonaws.com
 
       # Install jq
       - name: Install jq
