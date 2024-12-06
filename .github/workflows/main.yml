@@ -28,15 +28,6 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      # Step 4: Install kubectl
-      - name: Install kubectl
-        run: |
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-          echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-          kubectl version --client
-
       # Step 5: Make the script executable
       - name: Set execute permission on the script
         run: chmod +x ./shell.sh
@@ -44,8 +35,3 @@ jobs:
       # Step 6: Execute the shell script
       - name: Run the shell script
         run: ./shell.sh
-
-      - name: Connect EDC Cluster
-        run: |
-          aws eks update-kubeconfig --region eu-central-1 --name edc-dev
-          kubectl get node
