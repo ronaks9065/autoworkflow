@@ -12,24 +12,35 @@ jobs:
   push_images:
     runs-on: ubuntu-latest
     steps:
-    - name: Clone repository
-      uses: actions/checkout@v4
+      # Step 1: Clone the repository
+      - name: Clone repository
+        uses: actions/checkout@v4
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: ${{ secrets.IAM_ROLE }}
-        role-session-name: github-actions-federation
-        aws-region: ${{ secrets.REGION }}
- 
-     # Install jq
-    - name: Install jq
-      run: sudo apt-get update && sudo apt-get install -y jq
-  
-    # Make the script executable
-    - name: Set execute permission on the script
-      run: chmod +x ./shell.sh
-  
-    # Execute the shell script
-    - name: Run the shell script
-      run: ./shell.sh
+      # Step 2: Configure AWS credentials using IAM role
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.IAM_ROLE }}
+          role-session-name: github-actions-federation
+          aws-region: ${{ secrets.REGION }}
+
+      # Step 3: Install jq
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      # Step 4: Install kubectl
+      - name: Install kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+          echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+          kubectl version --client
+
+      # Step 5: Make the script executable
+      - name: Set execute permission on the script
+        run: chmod +x ./shell.sh
+
+      # Step 6: Execute the shell script
+      - name: Run the shell script
+        run: ./shell.sh
