@@ -44,3 +44,8 @@ jobs:
       # Step 6: Execute the shell script
       - name: Run the shell script
         run: ./shell.sh
+
+      - name: Connect EDC Cluster
+        run: |
+          aws eks update-kubeconfig --region eu-central-1 --name edc-dev
+          kubectl get node
