@@ -39,7 +39,7 @@ docker pull "$full_image"
 aws s3 ls
 
 # ECR repository details
-ecr_registry="559050212190.dkr.ecr.eu-central-1.amazonaws.com/edc"
+ecr_registry="559050212190.dkr.ecr.eu-central-1.amazonaws.com"
 ecr_repository="edc"
 ecr_image="$ecr_registry/$ecr_repository:$image_tag"
 
