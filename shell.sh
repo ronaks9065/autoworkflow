@@ -36,19 +36,21 @@ echo "Docker image to pull: $full_image"
 echo "Pulling image: $full_image"
 docker pull "$full_image"
 
-# ECR repository details
-ecr_registry="public.ecr.aws/z8l4a2l1"
-ecr_repository="edc"
-ecr_image="$ecr_registry/$ecr_repository:$image_tag"
+aws s3 ls
 
-# Login to AWS ECR
-aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin "$ecr_registry"
+# # ECR repository details
+# ecr_registry="public.ecr.aws/z8l4a2l1"
+# ecr_repository="edc"
+# ecr_image="$ecr_registry/$ecr_repository:$image_tag"
 
-# Tag and push the image to ECR
-echo "Tagging image: $full_image as $ecr_image"
-docker tag "$full_image" "$ecr_image"
+# # Login to AWS ECR
+# aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin "$ecr_registry"
 
-echo "Pushing image to ECR: $ecr_image"
-docker push "$ecr_image"
+# # Tag and push the image to ECR
+# echo "Tagging image: $full_image as $ecr_image"
+# docker tag "$full_image" "$ecr_image"
 
-echo "Image has been successfully pushed to ECR."
+# echo "Pushing image to ECR: $ecr_image"
+# docker push "$ecr_image"
+
+# echo "Image has been successfully pushed to ECR."
