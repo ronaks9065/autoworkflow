@@ -44,8 +44,8 @@ ecr_repository="edc"
 ecr_image="$ecr_registry/$ecr_repository:$image_tag"
 
 # Login to AWS ECR
-aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin "$ecr_registry"
-
+# aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin 
+aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin "$ecr_registry"
 # Tag and push the image to ECR
 echo "Tagging image: $full_image as $ecr_image"
 docker tag "$full_image" "$ecr_image"
