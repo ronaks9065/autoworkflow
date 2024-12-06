@@ -50,7 +50,7 @@ aws ecr get-login-password --region eu-central-1 | docker login --username AWS -
 echo "Tagging image: $full_image as $ecr_image"
 docker tag "$full_image" "$ecr_image"
 
-# echo "Pushing image to ECR: $ecr_image"
-# docker push "$ecr_image"
+echo "Pushing image to ECR: $ecr_image"
+docker push "$ecr_image"
 
-# echo "Image has been successfully pushed to ECR."
+echo "Image has been successfully pushed to ECR."
