@@ -36,8 +36,6 @@ echo "Docker image to pull: $full_image"
 echo "Pulling image: $full_image"
 docker pull "$full_image"
 
-aws s3 ls
-
 # ECR repository details
 ecr_registry="381491900147.dkr.ecr.eu-central-1.amazonaws.com"
 ecr_repository="edc"
