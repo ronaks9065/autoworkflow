@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: edc-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/load-balancer-name: "edc-ingress"
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/subnets: subnet-061ce14d8a9e3c4b8, subnet-0834734e2c238c2d1
+spec:
+  rules:
+  - http:
+      paths:
+      # edc-service routes
+      - path: /port-11001
+        pathType: Prefix
+        backend:
+          service:
+            name: edc-service
+            port:
+              number: 11001
+      - path: /port-11002
+        pathType: Prefix
+        backend:
+          service:
+            name: edc-service
+            port:
+              number: 11002
+      - path: /port-11003
+        pathType: Prefix
+        backend:
+          service:
+            name: edc-service
+            port:
+              number: 11003
+      # edc-ui-service routes
+      - path: /ui
+        pathType: Prefix
+        backend:
+          service:
+            name: edc-ui-service
+            port:
+              number: 8080
