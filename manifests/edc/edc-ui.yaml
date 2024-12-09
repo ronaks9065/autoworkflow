@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edc-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edc-ui
+  template:
+    metadata:
+      labels:
+        app: edc-ui
+    spec:
+      containers:
+      - name: edc-ui
+        image: ghcr.io/sovity/edc-ui:4.1.6
+        envFrom:
+          - configMapRef:
+              name: edc-config
+        ports:
+          - containerPort: 8080
+          - containerPort: 5005
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: edc-ui-service
+spec:
+  type: ClusterIP
+  selector:
+    app: edc-ui
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
