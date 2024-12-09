@@ -1,8 +1,8 @@
 name: Github actions with IAM role
 on:
-  push:
-    branches:
-      - master
+  # push:
+  #   branches:
+  #     - master
   schedule:
     # Runs at 9 AM every Monday
     - cron: '0 9 * * 1'
