@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edc
+  template:
+    metadata:
+      labels:
+        app: edc
+    spec:
+      imagePullSecrets:
+        - name: edc-secret
+      containers:
+        - name: edc
+          image: 381491900147.dkr.ecr.eu-central-1.amazonaws.com/edc:10.4.3
+          envFrom:
+            - configMapRef:
+                name: edc-config
+          volumeMounts:
+            - name: jks-volume
+              mountPath: "/app/config/myfile.jks"
+              subPath: myfile.jks
+          ports:
+            - containerPort: 11001
+            - containerPort: 11002
+            - containerPort: 11003
+            - containerPort: 11004
+            - containerPort: 5005
+      volumes:
+        - name: jks-volume
+          secret:
+            secretName: edc-keystore-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edc-service
+spec:
+  type: ClusterIP
+  selector:
+    app: edc
+  ports:
+    - name: port-11001
+      protocol: TCP
+      port: 11001
+      targetPort: 11001
+    - name: port-11002
+      protocol: TCP
+      port: 11002
+      targetPort: 11002
+    - name: port-11003
+      protocol: TCP
+      port: 11003
+      targetPort: 11003
