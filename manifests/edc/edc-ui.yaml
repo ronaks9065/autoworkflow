@@ -28,7 +28,7 @@ kind: Service
 metadata:
   name: edc-ui-service
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: edc-ui
   ports:

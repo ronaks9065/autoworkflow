@@ -12,11 +12,11 @@ spec:
       labels:
         app: daps
     spec:
-      # imagePullSecrets:
-      # - name: ecr-sovity-daps-secret
+      imagePullSecrets:
+      - name: edc-secret
       containers:
       - name: daps
-        image: public.ecr.aws/w5j8l3v0/sovity:latest
+        image: 381491900147.dkr.ecr.eu-central-1.amazonaws.com/edc-daps:24.0.3-1
         envFrom:
           - configMapRef:
               name: daps-config
@@ -29,7 +29,7 @@ kind: Service
 metadata:
   name: daps-service
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: daps
   ports:

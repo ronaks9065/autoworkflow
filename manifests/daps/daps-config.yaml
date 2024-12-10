@@ -9,7 +9,7 @@ data:
   KC_DB_SCHEMA: public
   KC_DB_USERNAME: postgres
   KC_DB_PASSWORD: gLRMDFqHJHobHxFSUpBq
-  KC_HOSTNAME: daps.edcaas.io
+  KC_HOSTNAME: dev-daps.edcaas.io
   KC_HTTP_ENABLED: "true"
   KEYCLOAK_ADMIN: admin
   KEYCLOAK_ADMIN_PASSWORD: a8mR1pdIl&tbQWzT
