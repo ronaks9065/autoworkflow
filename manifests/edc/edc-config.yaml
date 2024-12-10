@@ -5,7 +5,7 @@ metadata:
 data:
  
   MY_EDC_FQDN: "edc.edcaas.io"
-  MY_EDC_PARTICIPANT_ID: "my-edc"
+  MY_EDC_PARTICIPANT_ID: "41:1E:30:93:58:FC:94:D0:7C:B3:4C:A4:F6:05:4A:46:CC:6E:AE:9F:keyid:41:1E:30:93:58:FC:94:D0:7C:B3:4C:A4:F6:05:4A:46:CC:6E:AE:9F"
   MY_EDC_TITLE: "EDC Connector"
   MY_EDC_DESCRIPTION: "sovity Community Edition EDC Connector"
  
@@ -19,8 +19,8 @@ data:
   MY_EDC_MAINTAINER_URL: "https://sovity.de"
   MY_EDC_MAINTAINER_NAME: "sovity GmbH"
  
-  # EDC_OAUTH_TOKEN_URL: 'https://daps.test.mobility-dataspace.eu/token'
-  # EDC_OAUTH_PROVIDER_JWKS_URL: 'https://daps.test.mobility-dataspace.eu/jwks.json'
+  EDC_OAUTH_TOKEN_URL: 'https://daps.edcaas.io/realms/master/protocol/openid-connect/token'
+  EDC_OAUTH_PROVIDER_JWKS_URL: 'https://daps.edcaas.io/realms/master/protocol/openid-connect/certs'
  
   # DAPS Credentials  generate from generate_ski_aki.sh
   EDC_OAUTH_CLIENT_ID: "41:1E:30:93:58:FC:94:D0:7C:B3:4C:A4:F6:05:4A:46:CC:6E:AE:9F:keyid:41:1E:30:93:58:FC:94:D0:7C:B3:4C:A4:F6:05:4A:46:CC:6E:AE:9F"
